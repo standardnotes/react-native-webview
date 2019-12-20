@@ -80,6 +80,7 @@ static NSDictionary* customCertificatesForHost;
     _showsVerticalScrollIndicator = YES;
     _directionalLockEnabled = YES;
     _automaticallyAdjustContentInsets = YES;
+    _autoManageStatusBarEnabled = YES;
     _contentInset = UIEdgeInsetsZero;
     _savedKeyboardDisplayRequiresUserAction = YES;
     _savedStatusBarStyle = RCTSharedApplication().statusBarStyle;
@@ -199,7 +200,7 @@ static NSDictionary* customCertificatesForHost;
 
       WKUserScript *script = [[WKUserScript alloc] initWithSource:source injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
       [wkWebViewConfig.userContentController addUserScript:script];
-        
+
       if (_injectedJavaScriptBeforeContentLoaded) {
         // If user has provided an injectedJavascript prop, execute it at the start of the document
         WKUserScript *injectedScript = [[WKUserScript alloc] initWithSource:_injectedJavaScriptBeforeContentLoaded injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
@@ -337,6 +338,10 @@ static NSDictionary* customCertificatesForHost;
 -(void)showFullScreenVideoStatusBars
 {
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+  if (!_autoManageStatusBarEnabled) {
+    return;
+  }
+  if (!_isFullScreenVideoOpen) {
     _isFullScreenVideoOpen = YES;
     RCTUnsafeExecuteOnMainQueueSync(^{
       [RCTSharedApplication() setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
@@ -940,7 +945,7 @@ static NSDictionary* customCertificatesForHost;
         _onHttpError(event);
       }
     }
-  }  
+  }
 
   decisionHandler(WKNavigationResponsePolicyAllow);
 }
