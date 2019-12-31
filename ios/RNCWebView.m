@@ -338,10 +338,9 @@ static NSDictionary* customCertificatesForHost;
 -(void)showFullScreenVideoStatusBars
 {
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-  if (!_autoManageStatusBarEnabled) {
-    return;
-  }
-  if (!_isFullScreenVideoOpen) {
+    if (!_autoManageStatusBarEnabled) {
+      return;
+    }
     _isFullScreenVideoOpen = YES;
     RCTUnsafeExecuteOnMainQueueSync(^{
       [RCTSharedApplication() setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
@@ -352,6 +351,9 @@ static NSDictionary* customCertificatesForHost;
 -(void)hideFullScreenVideoStatusBars
 {
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    if (!_autoManageStatusBarEnabled) {
+      return;
+    }
     _isFullScreenVideoOpen = NO;
     RCTUnsafeExecuteOnMainQueueSync(^{
       [RCTSharedApplication() setStatusBarHidden:self->_savedStatusBarHidden animated:YES];
